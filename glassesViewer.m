@@ -108,10 +108,9 @@ end
 % check if we have a G2 or a G3 recording selected
 isG2 = exist(fullfile(recordingDir,'segments'),'dir') && exist(fullfile(recordingDir,'recording.json'),'file');
 
-
 %% init figure
 hm=figure();
-hm.Name='Tobii Pro Glasses 2/3 Viewer';
+hm.Name='Glasses Viewer (R) for MindLink';
 hm.NumberTitle = 'off';
 hm.Units = 'pixels';
 hm.MenuBar = 'none';
@@ -132,7 +131,9 @@ if isprop(hm,'WindowState')
     pos = hm.OuterPosition;
     set(hm,'WindowState','normal','OuterPosition',pos);
 else
-    hmmar = [0 0 0 40];    % left right top bottom
+    %hmmar = [0 0 0 40];    % left right top bottom
+
+    hmmar = [40 40 40 40];    % left right top bottom
     ws = get(0,'ScreenSize');
     hm.OuterPosition = [ws(1) + hmmar(1), ws(2) + hmmar(4), ws(3)-hmmar(1)-hmmar(2), ws(4)-hmmar(3)-hmmar(4)];
     drawnow
@@ -157,26 +158,27 @@ hm.UserData.settings = settings;
 %% load data
 % read glasses data
 if isG2
-    hm.UserData.data        = readG2DataFiles(hm.UserData.fileDir,hm.UserData.settings.userStreams,qDEBUG);
+    hm.UserData.data        = readMindLinkDataFiles(hm.UserData.fileDir,hm.UserData.settings.userStreams,qDEBUG);
+    %hm.UserData.data        = readG2DataFiles(hm.UserData.fileDir,hm.UserData.settings.userStreams,qDEBUG);
 else
     hm.UserData.data        = readG3DataFiles(hm.UserData.fileDir,hm.UserData.settings.userStreams,qDEBUG);
 end
-hm.UserData.data.quality    = computeDataQuality(hm.UserData.fileDir, hm.UserData.data, hm.UserData.settings.dataQuality.windowLength);
+%hm.UserData.data.quality    = computeDataQuality(hm.UserData.fileDir, hm.UserData.data, hm.UserData.settings.dataQuality.windowLength);
 hm.UserData.ui.haveEyeVideo = isfield(hm.UserData.data.video,'eye');
 %% get coding setup
-if isfield(hm.UserData.settings,'coding') && isfield(hm.UserData.settings.coding,'streams') && ~isempty(hm.UserData.settings.coding.streams)
-    hm.UserData.coding           = getCodingData(hm.UserData.fileDir, '', hm.UserData.settings.coding, hm.UserData.data);
-    hm.UserData.coding.hasCoding = ~isempty(hm.UserData.coding.mark);
-    % if a coding.mat file already existed, the coding settings from there
-    % are taken, overwriting whatever was in the settings provided for this
-    % run. That is important, else an inadvertent settings change makes a
-    % coding.mat file unusable
-    % Therefore, delete hm.UserData.settings.coding, and in the below only
-    % use hm.UserData.coding.settings
-    hm.UserData.settings = rmfield(hm.UserData.settings,'coding');
-else
+% if isfield(hm.UserData.settings,'coding') && isfield(hm.UserData.settings.coding,'streams') && ~isempty(hm.UserData.settings.coding.streams)
+%     hm.UserData.coding           = getCodingData(hm.UserData.fileDir, '', hm.UserData.settings.coding, hm.UserData.data);
+%     hm.UserData.coding.hasCoding = ~isempty(hm.UserData.coding.mark);
+%     % if a coding.mat file already existed, the coding settings from there
+%     % are taken, overwriting whatever was in the settings provided for this
+%     % run. That is important, else an inadvertent settings change makes a
+%     % coding.mat file unusable
+%     % Therefore, delete hm.UserData.settings.coding, and in the below only
+%     % use hm.UserData.coding.settings
+%     hm.UserData.settings = rmfield(hm.UserData.settings,'coding');
+% else
     hm.UserData.coding.hasCoding = false;
-end
+% end
 % update figure title
 hm.Name = [hm.Name ' (' hm.UserData.data.subjName '-' hm.UserData.data.recName ')'];
 
@@ -216,6 +218,7 @@ drawnow
 opos3   = temp.OuterPosition;
 posxy   = temp.Position;
 delete(temp);
+
 assert(isequal(opos,opos2,opos3))
 
 % determine margins
@@ -324,7 +327,12 @@ for a=1:nPanel
         if qReverseY
             hm.UserData.plot.ax(a).YDir = 'reverse';
         end
+        
+%         disp(pDat{1});
+        
         for p=1:length(pDat{2})
+%             length(pDat{1}{min(p,end)}), length(pDat{2}{p});
+            
             plot(pDat{1}{min(p,end)},pDat{2}{p},'Color',clrs.(pType){p},'Parent',hm.UserData.plot.ax(a),'Tag',['data|' pType(p)],commonPropPlot{:});
         end
     end
@@ -381,8 +389,8 @@ if hm.UserData.coding.hasCoding
     hm.UserData.ui.coding.currentStream = nan;
     changeCoderStream(hm,1);
     updateScarf(hm);
-else
-    delete(hm.UserData.menu.coding);
+% else
+%     delete(hm.UserData.menu.coding);
 end
 
 % set up menu
@@ -660,12 +668,12 @@ function setupMenu(hm)
 mitem  = uimenu(hm.UserData.menu.export.hndl,'Text','&Data streams');
 mitem2 = uimenu(mitem,'Text','Export &full recording to tsv','Callback',@(~,~) saveDataStreamsTSV(hm));
 mitem2 = uimenu(mitem,'Text','Export &segments to tsv');
-setupCodingStreamMenu(hm,mitem2, @(s,c) @(~,~) saveDataStreamsTSV(hm,s,c));
+% setupCodingStreamMenu(hm,mitem2, @(s,c) @(~,~) saveDataStreamsTSV(hm,s,c));
 % data quality
 mitem  = uimenu(hm.UserData.menu.export.hndl,'Text','Data &quality');
 mitem2 = uimenu(mitem,'Text','Store to tsv for &full recording','CallBack',@(~,~) saveDataQualityTSV(hm));
 mitem2 = uimenu(mitem,'Text','Store to tsv for &segments');
-setupCodingStreamMenu(hm,mitem2, @(s,c) @(~,~) saveDataQualityTSV(hm,s,c));
+% setupCodingStreamMenu(hm,mitem2, @(s,c) @(~,~) saveDataQualityTSV(hm,s,c));
 % scene video
 hm.UserData.menu.export.video = uimenu(hm.UserData.menu.export.hndl,...
     'Text','Export scene &video with gaze',...
@@ -2405,7 +2413,7 @@ if isfield(hm.UserData.ui.coding,'panel')
     uistack(hm.UserData.ui.coding.panel.obj,'top');
 end
 
-makeDataQualityPanel(hm);
+% makeDataQualityPanel(hm);
 
 % add settings spinners to settings item in menu bar, and current time to
 % menu bar itself

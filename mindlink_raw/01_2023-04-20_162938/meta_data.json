@@ -1,0 +1,99 @@
+{
+	"user_profile": {
+		"name": "test",
+		"age": 26,
+		"gender": "Male",
+		"ipd_mm": null,
+		"ethnicity": "None",
+		"corrective": null,
+		"right_eye": null,
+		"left_eye": null,
+		"nosepiece": "3",
+		"cal_blob_id": 1804141322
+	},
+	"camera_config": {
+		"deg_to_px": [
+			0.01156741769294673,
+			-0.06573923732680452,
+			22.872854936098832
+		],
+		"config_file": "assets/worldcamera/camera_configs/Sincere-1920x1080.yaml",
+		"product_id": 31,
+		"camera_type": 7
+	},
+	"recording_config": {
+		"version": 2,
+		"session_id": "6440f7961b770000a1007a9e"
+	},
+	"custom_tags": [],
+	"meta_version": "1.2.0",
+	"manifest": {
+		"manifest_version": "1.0.0",
+		"recording_length_ms": 33163,
+		"entries": [
+			{
+				"type": "GAZE",
+				"file_name": "gaze_data.csv",
+				"attribute": {
+					"start_time_ms": 9,
+					"end_time_ms": 33199,
+					"index": 0
+				}
+			},
+			{
+				"type": "IPD",
+				"file_name": "ipd_data.csv",
+				"attribute": {
+					"start_time_ms": 7,
+					"end_time_ms": 33187,
+					"index": 0
+				}
+			},
+			{
+				"type": "PUPIL_DIAMETER",
+				"file_name": "pupil_diameter_data.csv",
+				"attribute": {
+					"start_time_ms": 6,
+					"end_time_ms": 33187,
+					"index": 0
+				}
+			},
+			{
+				"type": "PUPIL_POSITION",
+				"file_name": "pupil_position_data.csv",
+				"attribute": {
+					"start_time_ms": 5,
+					"end_time_ms": 33187,
+					"index": 0
+				}
+			},
+			{
+				"type": "IMU",
+				"file_name": "imu_data.csv",
+				"attribute": {
+					"start_time_ms": 9,
+					"end_time_ms": 33187,
+					"index": 0
+				}
+			},
+			{
+				"type": "BLINK",
+				"file_name": "blink_data.csv",
+				"attribute": {
+					"start_time_ms": 982,
+					"end_time_ms": 32019,
+					"index": 0
+				}
+			},
+			{
+				"type": "VIDEO",
+				"file_name": "session.mp4",
+				"attribute": {
+					"start_time_ms": 24,
+					"end_time_ms": 33187,
+					"index": 0
+				}
+			}
+		]
+	}
+}

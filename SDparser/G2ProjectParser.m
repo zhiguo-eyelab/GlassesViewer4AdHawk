@@ -46,6 +46,7 @@ for p = 1:nproj
     else
         projects(p).name = json.pr_info.name;
     end
+    json.pr_created
     projects(p).createdate  = datenum(json.pr_created,'yyyy-mm-ddTHH:MM:SS');    % G2 times are always UTC (denoted by +0000 suffix), which we can ignore.
     
     % get what recording folders we have -- required

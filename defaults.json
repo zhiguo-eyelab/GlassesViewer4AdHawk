@@ -3,7 +3,7 @@
     "removeAccDC": true,
     "SGWindowVelocity": 20,
     "timeWindow": 2,
-    "panelOrder": [ "azi", "scarf", "ele", "vel", "pup", "gyro", "acc" ],
+    "panelOrder": [ "azi", "scarf", "ele", "videoGaze", "pupCentLeft", "pupCentRight", "vel", "pup", "gyro", "acc" ],
     "streamNames": {
       "azi": "azimuth",
       "ele": "elevation",
@@ -19,13 +19,14 @@
       "scarf": "coding scarf"
     },
     "lims": {
-      "azi": 45,
-      "ele": 30,
+      "azi": 180,
+      "ele": 180,
       "gazePoint3D": 5000,
-      "vel": [0, 400],
+      "vel": [0, 500],
       "pupCentLeft": 100,
       "pupCentRight": 100,
-      "gyro": 150
+      "gyro": 5000,
+      "acc": 50
     },
     "adjustLimsToData": ["gazePoint3D","pupCentLeft","pupCentRight","gyro"],
     "units": {

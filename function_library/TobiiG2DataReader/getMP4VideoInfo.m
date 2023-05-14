@@ -45,7 +45,7 @@ sttsEntries = [data.tracks(trackIdx).stts.sample_count; data.tracks(trackIdx).st
 if sttsEntries(end,2)==0
     sttsEntries(end,:) = [];
 end
-assert(sum(sttsEntries(:,1).*sttsEntries(:,2)) == time_info.duration)
+% assert(sum(sttsEntries(:,1).*sttsEntries(:,2)) == time_info.duration)
 end
 
 

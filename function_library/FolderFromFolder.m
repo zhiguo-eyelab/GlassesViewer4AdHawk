@@ -34,6 +34,8 @@ fold(qremove) = [];
 
 nfold = length(fold);
 
+% fprintf('testing... %s', folder);
+
 if nfold==0
     if silent==1
         fprintf('FolderFromFolder: No folders found in: %s\n',folder);

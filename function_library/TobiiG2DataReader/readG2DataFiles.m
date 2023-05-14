@@ -55,7 +55,9 @@ if qGenCacheFile || qDEBUG
         delete(file);
     end
     % 2 get ts, s and type per packet
-    types = regexp(txt,'(?:"ts":)(\d+,).*?(?:"s":)(\d+,).*?(?:")(pc|pd|gd|gp|gp3|gy|ac|vts|evts|pts|epts|sig|type)(?:")','tokens');   % only get first item of status code, we just care if 0 or not. get delimiter of ts on purpose, so we can concat all matches and just sscanf
+    types = regexp(txt,'(?:"ts":)(\d+,).*?(?:"s":)(\d+,).*?(?:")(pc|pd|gd|gp|gp3|gy|ac|vts|evts|pts|epts|sig|type)(?:")','tokens');  
+    % only get first item of status code, we just care if 0 or not. get delimiter of ts on purpose, so we can concat all matches and just sscanf
+    
     types = cat(1,types{:});
     % 3 transform packets into struct of arrays we do our further
     % processing on
@@ -265,9 +267,9 @@ if qGenCacheFile || qDEBUG
     % 5.1 convert gaze vectors to azimuth elevation
     [la,le] = cart2sph(data.eye. left.gd(:,1),data.eye. left.gd(:,3),data.eye. left.gd(:,2));   % matlab's Z and Y are reversed w.r.t. ours
     [ra,re] = cart2sph(data.eye.right.gd(:,1),data.eye.right.gd(:,3),data.eye.right.gd(:,2));
-    data.eye. left.azi  =  la*180/pi-90;    % I have checked sign and offset of azi and ele so that things match the gaze position on the scene video in the data file (gp)
+    data.eye.left.azi  =  la*180/pi-90;    % I have checked sign and offset of azi and ele so that things match the gaze position on the scene video in the data file (gp)
     data.eye.right.azi  =  ra*180/pi-90;
-    data.eye. left.ele  = -le*180/pi;
+    data.eye.left.ele  = -le*180/pi;
     data.eye.right.ele  = -re*180/pi;
     
     % 6 add gyroscope and accelerometer data to output file
