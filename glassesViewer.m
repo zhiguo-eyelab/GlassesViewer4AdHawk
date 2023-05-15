@@ -162,21 +162,24 @@ else
     hm.UserData.data        = readG3DataFiles(hm.UserData.fileDir,hm.UserData.settings.userStreams,qDEBUG);
 end
 hm.UserData.data.quality    = computeDataQuality(hm.UserData.fileDir, hm.UserData.data, hm.UserData.settings.dataQuality.windowLength);
+
+% check if the data.video struct has an 'eye' stream, MindLink has None 
 hm.UserData.ui.haveEyeVideo = isfield(hm.UserData.data.video,'eye');
+
 %% get coding setup
-% if isfield(hm.UserData.settings,'coding') && isfield(hm.UserData.settings.coding,'streams') && ~isempty(hm.UserData.settings.coding.streams)
-%     hm.UserData.coding           = getCodingData(hm.UserData.fileDir, '', hm.UserData.settings.coding, hm.UserData.data);
-%     hm.UserData.coding.hasCoding = ~isempty(hm.UserData.coding.mark);
-%     % if a coding.mat file already existed, the coding settings from there
-%     % are taken, overwriting whatever was in the settings provided for this
-%     % run. That is important, else an inadvertent settings change makes a
-%     % coding.mat file unusable
-%     % Therefore, delete hm.UserData.settings.coding, and in the below only
-%     % use hm.UserData.coding.settings
-%     hm.UserData.settings = rmfield(hm.UserData.settings,'coding');
-% else
+if isfield(hm.UserData.settings,'coding') && isfield(hm.UserData.settings.coding,'streams') && ~isempty(hm.UserData.settings.coding.streams)
+    hm.UserData.coding           = getCodingData(hm.UserData.fileDir, '', hm.UserData.settings.coding, hm.UserData.data);
+    hm.UserData.coding.hasCoding = ~isempty(hm.UserData.coding.mark);
+    % if a coding.mat file already existed, the coding settings from there
+    % are taken, overwriting whatever was in the settings provided for this
+    % run. That is important, else an inadvertent settings change makes a
+    % coding.mat file unusable
+    % Therefore, delete hm.UserData.settings.coding, and in the below only
+    % use hm.UserData.coding.settings
+    hm.UserData.settings = rmfield(hm.UserData.settings,'coding');
+else
     hm.UserData.coding.hasCoding = false;
-% end
+end
 % update figure title
 hm.Name = [hm.Name ' (' hm.UserData.data.subjName '-' hm.UserData.data.recName ')'];
 
