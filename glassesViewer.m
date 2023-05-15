@@ -131,9 +131,7 @@ if isprop(hm,'WindowState')
     pos = hm.OuterPosition;
     set(hm,'WindowState','normal','OuterPosition',pos);
 else
-    %hmmar = [0 0 0 40];    % left right top bottom
-
-    hmmar = [40 40 40 40];    % left right top bottom
+    hmmar = [0 0 0 40];    % left right top bottom
     ws = get(0,'ScreenSize');
     hm.OuterPosition = [ws(1) + hmmar(1), ws(2) + hmmar(4), ws(3)-hmmar(1)-hmmar(2), ws(4)-hmmar(3)-hmmar(4)];
     drawnow
@@ -163,7 +161,7 @@ if isG2
 else
     hm.UserData.data        = readG3DataFiles(hm.UserData.fileDir,hm.UserData.settings.userStreams,qDEBUG);
 end
-%hm.UserData.data.quality    = computeDataQuality(hm.UserData.fileDir, hm.UserData.data, hm.UserData.settings.dataQuality.windowLength);
+hm.UserData.data.quality    = computeDataQuality(hm.UserData.fileDir, hm.UserData.data, hm.UserData.settings.dataQuality.windowLength);
 hm.UserData.ui.haveEyeVideo = isfield(hm.UserData.data.video,'eye');
 %% get coding setup
 % if isfield(hm.UserData.settings,'coding') && isfield(hm.UserData.settings.coding,'streams') && ~isempty(hm.UserData.settings.coding.streams)
@@ -2413,7 +2411,8 @@ if isfield(hm.UserData.ui.coding,'panel')
     uistack(hm.UserData.ui.coding.panel.obj,'top');
 end
 
-% makeDataQualityPanel(hm);
+% show the data quality panel
+makeDataQualityPanel(hm);
 
 % add settings spinners to settings item in menu bar, and current time to
 % menu bar itself

@@ -50,7 +50,7 @@ if qGenCacheFile || qDEBUG
     %     segments.bytes
     %     segments.isdir
     %     segments.datenum
-    [segments, modes] = FolderFromFolder(fullfile(recordingDir,'segments'), 1)
+    [segments, modes] = FolderFromFolder(fullfile(recordingDir,'segments'), 1);
         
     % read all segments into a table
     gaze = [];
@@ -88,10 +88,7 @@ if qGenCacheFile || qDEBUG
             imu = getMindLinkDataFromCSV(csv_imu, 1);
         end
     end
-    
-    % 5 reorganize eye data into binocular data, left eye data and right eye data
-    data.device = 'MindLink';
-    
+        
     % gaze sample index * Here we trim the recording, just for demo
     % purposes, will need to revisit this data length issue
     nSamp  = min([length(gaze.Timestamp) length(pupil_diameter.Timestamp) length(pupil_center.Timestamp)]);
@@ -151,14 +148,7 @@ if qGenCacheFile || qDEBUG
     
     % API event, *** empty
     APIevent = struct('ts', [], 'ets', [], 'type',{}, 'tag', {});
-    
-    % 7 add video sync data to output file
-%     assert(issorted( vts.ts,'monotonic'))
-%     assert(numel(unique(vts.ts-vts.vts))==length(segments))    % this is an assumption of the fts calculation code below
-%     data.video.scene.sync   =  vts;
-% 
-%     clear vts evts
-    
+
     % 10 determine t0, convert all timestamps to second
     % set t0 as start point of latest video
     t0 = min(eye.left.ts);
@@ -250,7 +240,8 @@ if qGenCacheFile || qDEBUG
     eye.binocular.gp(:,2) = eye.binocular.gp(:,2)*scene.height;
     
     % put all data into a struct
-    data = struct();
+    data = struct();    
+    data.device = 'MindLink';
     data.eye = eye;
     data.video = video;
     data.syncPort = syncPort;
@@ -286,6 +277,7 @@ else
     data = load(cacheFile);
     % still output warning messages about holes in video, if any
     checkMissingFrames(data.video, 0.05, 0.1);
+    
     % recompute user streams, if needed because settings changed, or
     % because requested
     qResaveCache = false;
