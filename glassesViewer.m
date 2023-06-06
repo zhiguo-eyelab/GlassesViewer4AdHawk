@@ -1,6 +1,7 @@
 function hm = glassesViewer(settings,selectedDir)
 close all
 
+
 % Cite as: Niehorster, D.C., Hessels, R.S., and Benjamins, J.S. (2020).
 % GlassesViewer: Open-source software for viewing and analyzing data from
 % the Tobii Pro Glasses 2 eye tracker. Behavior Research Methods. doi:
@@ -110,7 +111,7 @@ isG2 = exist(fullfile(recordingDir,'segments'),'dir') && exist(fullfile(recordin
 
 %% init figure
 hm=figure();
-hm.Name='Glasses Viewer (R) for MindLink';
+hm.Name='GlassesViewer for MindLink';
 hm.NumberTitle = 'off';
 hm.Units = 'pixels';
 hm.MenuBar = 'none';
@@ -131,7 +132,7 @@ if isprop(hm,'WindowState')
     pos = hm.OuterPosition;
     set(hm,'WindowState','normal','OuterPosition',pos);
 else
-    hmmar = [0 0 0 40];    % left right top bottom
+    hmmar = [40 40 40 40];    % left right top bottom
     ws = get(0,'ScreenSize');
     hm.OuterPosition = [ws(1) + hmmar(1), ws(2) + hmmar(4), ws(3)-hmmar(1)-hmmar(2), ws(4)-hmmar(3)-hmmar(4)];
     drawnow
@@ -223,7 +224,7 @@ delete(temp);
 assert(isequal(opos,opos2,opos3))
 
 % determine margins
-hm.UserData.plot.margin.base    = pos  -opos;
+hm.UserData.plot.margin.base    = pos -opos;
 hm.UserData.plot.margin.y       = posy -opos-hm.UserData.plot.margin.base;
 hm.UserData.plot.margin.xy      = posxy-opos-hm.UserData.plot.margin.base-hm.UserData.plot.margin.y;
 hm.UserData.plot.margin.between = 8;
@@ -2558,7 +2559,7 @@ function fixupAxisLabels(hm)
 yl=[hm.UserData.plot.ax.YLabel];
 [yl.Units] = deal('pixels');
 pos = cat(1,yl.Position);
-pos(:,1) = min(pos(:,1));                       % set to furthest
+pos(:,1) = min(pos(:,1)) + 4;                     % set to furthest
 pos(:,2) = hm.UserData.plot.axPos(1,end)/2;     % center vertically
 pos = num2cell(pos,2);
 [yl.Position] = pos{:};
